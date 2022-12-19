@@ -1,13 +1,4 @@
-package klaeffer.domain.shared;
+package klaeffer.domain.model;
 
-public class User {
-  private final Integer id;
-
-  public User(Integer id) {
-    this.id = id;
-  }
-
-  public Integer getId() {
-    return id;
-  }
+public record User(Integer id) {
 }

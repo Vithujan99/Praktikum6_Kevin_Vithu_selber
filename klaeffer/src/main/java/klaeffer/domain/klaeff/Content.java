@@ -1,4 +1,4 @@
-package klaeffer.domain.klaeff;
+package klaeffer.domain.model;
 
-record Content(String content) {
+record Content( String content) {
 }

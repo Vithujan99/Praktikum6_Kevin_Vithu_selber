@@ -1,4 +1,4 @@
-package klaeffer.domain.user;
+package klaeffer.domain.model;
 
 record UserName(String name) {
 }
