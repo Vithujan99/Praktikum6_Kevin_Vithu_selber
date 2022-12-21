@@ -1,4 +1,4 @@
 package klaeffer.domain.shared;
 
-public record User(Integer id) {
+public record UserKlaeff(Integer id) {
 }

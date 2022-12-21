@@ -1,23 +1,26 @@
 package klaeffer.service;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import klaeffer.domain.klaeff.Klaeff;
-import klaeffer.domain.shared.User;
+import klaeffer.domain.shared.UserKlaeff;
 import klaeffer.domain.user.UserInfo;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KlaeffService {
-  private final LinkedList<Klaeff> klaeffs = new LinkedList<>();
+  private final KlaeffRepository klaeffRepository;
   private final HashMap<Integer, UserInfo> userInfos = new HashMap<>();
 
 
+  public KlaeffService(KlaeffRepository klaeffRepository) {
+    this.klaeffRepository = klaeffRepository;
+  }
+
   private void add(Klaeff klaeff) {
-    klaeffs.addFirst(klaeff);
+    klaeffRepository.save(klaeff);
   }
 
   public KlaeffPage getKlaeffs(int offset, int amount) {
@@ -25,20 +28,20 @@ public class KlaeffService {
       offset = 0;
     }
     int start = offset * amount;
-    while (start > klaeffs.size()) {
+    while (start > klaeffRepository.size()) {
       start -= amount;
     }
-    List<KlaeffDetail> klaeffsOnPage = klaeffs.stream()
+    List<KlaeffDetail> klaeffsOnPage = klaeffRepository.findAll().stream()
         .skip(start)
         .limit(amount)
         .map(this::toDetail)
         .toList();
-    boolean more = klaeffs.size() > start + amount;
+    boolean more = klaeffRepository.size() > start + amount;
     return new KlaeffPage(klaeffsOnPage, more);
   }
 
   private KlaeffDetail toDetail(Klaeff klaeff) {
-    Integer id = klaeff.getUser().getId();
+    Integer id = klaeff.getUser().id();
     UserInfo userInfo = userInfo(id);
     return new KlaeffDetail(userInfo.getName(), klaeff.getContent(), id);
   }
@@ -51,8 +54,8 @@ public class KlaeffService {
     String login = principal.getAttribute("login");
     int id = Objects.requireNonNull(principal.getAttribute("id"));
     String image = principal.getAttribute("avatar_url");
-    User user = new User(id);
-    userInfos.put(id, new UserInfo(user, login, image));
-    add(new Klaeff(user, text));
+    UserKlaeff userKlaeff = new UserKlaeff(id);
+    userInfos.put(id, new UserInfo(userKlaeff, login, image));
+    add(new Klaeff(userKlaeff, text));
   }
 }

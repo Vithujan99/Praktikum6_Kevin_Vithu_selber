@@ -4,6 +4,10 @@ spring:
       client:
         registration:
           github:
-            client-id: ${CLIENT_ID}
-            client-secret: ${CLIENT_SECRET}
+            client-id: e3c23f543b98fa683483
+            client-secret: 7c9487e70c64d107a23554e2cb0ff850083e31b3
             scope: read:public_repo
+  datasource:
+    password: iamgroot
+    username: klaeffuser
+    url: jdbc:postgresql://localhost:5432/klaeff

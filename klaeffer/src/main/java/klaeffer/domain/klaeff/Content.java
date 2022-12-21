@@ -1,4 +1,4 @@
-package klaeffer.domain.model;
+package klaeffer.domain.klaeff;
 
 record Content( String content) {
 }

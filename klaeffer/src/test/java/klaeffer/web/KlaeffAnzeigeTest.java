@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import klaeffer.config.WebSecurityConfiguration;
-import klaeffer.domain.klaeff.Klaeff;
-import klaeffer.domain.shared.User;
 import klaeffer.helper.WithMockOAuth2User;
 import klaeffer.service.KlaeffDetail;
 import klaeffer.service.KlaeffPage;
@@ -37,7 +35,7 @@ public class KlaeffAnzeigeTest {
   @Nested
   @Import({WebSecurityConfiguration.class})
   @WebMvcTest
-  class UserInfoTests {
+  class UserKlaeffInfoTests {
 
     @Autowired
     MockMvc mvc;

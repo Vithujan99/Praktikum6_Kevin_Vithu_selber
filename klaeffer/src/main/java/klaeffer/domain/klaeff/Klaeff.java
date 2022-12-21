@@ -1,26 +1,27 @@
-package klaeffer.domain.model;
+package klaeffer.domain.klaeff;
 
+import klaeffer.domain.shared.UserKlaeff;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
 
 public class Klaeff {
   @Id
   private final Integer id;
-  private final User user;
+  private final UserKlaeff userKlaeff;
   private final Content content;
   @PersistenceCreator
-  public Klaeff(Integer id, User user, String content) {
+  public Klaeff(Integer id, UserKlaeff userKlaeff, String content) {
     this.id = id;
-    this.user = user;
+    this.userKlaeff = userKlaeff;
     this.content = new Content(content);
   }
 
-  public Klaeff(User user, String content) {
-    this(null, user, content);
+  public Klaeff(UserKlaeff userKlaeff, String content) {
+    this(null, userKlaeff, content);
   }
 
-  public User getUser() {
-    return user;
+  public UserKlaeff getUser() {
+    return userKlaeff;
   }
 
   public String getContent() {
