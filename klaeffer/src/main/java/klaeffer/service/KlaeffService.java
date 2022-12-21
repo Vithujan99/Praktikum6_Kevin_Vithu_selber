@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class KlaeffService {
 
   private final KlaeffRepository klaeffRepository;
-  private final HashMap<Integer, UserInfo> userInfos = new HashMap<>();
+  private final UserInfoRepository userInfoRepository;
+//  private final HashMap<Integer, UserInfo> userInfos = new HashMap<>();
 
-  public KlaeffService(KlaeffRepository klaeffRepository) {
+  public KlaeffService(KlaeffRepository klaeffRepository, UserInfoRepository userInfoRepository) {
     this.klaeffRepository = klaeffRepository;
+    this.userInfoRepository = userInfoRepository;
   }
 
 
@@ -48,7 +50,8 @@ public class KlaeffService {
   }
 
   public UserInfo userInfo(Integer id) {
-    return userInfos.get(id);
+    Integer userInfoId = userInfoRepository.findUserInfoId(id);
+    return userInfoRepository.findUserById(userInfoId);
   }
 
   public void addKlaeff(OAuth2User principal, String text) {
@@ -56,7 +59,7 @@ public class KlaeffService {
     int id = Objects.requireNonNull(principal.getAttribute("id"));
     String image = principal.getAttribute("avatar_url");
     KlaeffUser klaeffUser = new KlaeffUser(id);
-    userInfos.put(id, new UserInfo(klaeffUser, login, image));
+    userInfoRepository.save(new UserInfo(klaeffUser, login, image));
     add(new Klaeff(klaeffUser, text));
   }
 }

@@ -19,7 +19,7 @@ public class ProfilController {
   @GetMapping("/profil")
   public String profil(Integer id, Model model) {
     UserInfo userInfo = service.userInfo(id);
-    model.addAttribute("user", userInfo);
+    model.addAttribute("klaeffUser", userInfo);
     return "profil";
   }
 

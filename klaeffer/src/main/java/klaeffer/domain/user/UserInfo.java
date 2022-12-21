@@ -1,16 +1,25 @@
 package klaeffer.domain.user;
 
 import klaeffer.domain.shared.KlaeffUser;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 
 public class UserInfo {
+  @Id
+  private final Integer id;
   private final KlaeffUser klaeffUser;
-  private final UserName name;
+  private final String name;
   private final String image;
 
-  public UserInfo(KlaeffUser klaeffUser, String name, String image) {
+  @PersistenceCreator
+  public UserInfo(Integer id, KlaeffUser klaeffUser, String name, String image) {
+    this.id = id;
     this.klaeffUser = klaeffUser;
-    this.name = new UserName(name);
+    this.name = name;
     this.image = image;
+  }
+  public UserInfo(KlaeffUser klaeffUser, String name, String image){
+    this(null,klaeffUser,name,image);
   }
 
   public KlaeffUser getUser() {
@@ -18,7 +27,7 @@ public class UserInfo {
   }
 
   public String getName() {
-    return name.name();
+    return name;
   }
 
   public String getImage() {

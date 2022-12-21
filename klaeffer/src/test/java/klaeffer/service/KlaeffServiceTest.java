@@ -17,11 +17,11 @@ class KlaeffServiceTest {
 
   @Autowired
   KlaeffRepository klaeffRepository;
-
+  UserInfoRepository userInfoRepository;
   @Test
   @DisplayName("Der Service kann einen Klaeff speichern")
   void test_1() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(12, "Otto"), "Hallo!!!");
     assertThat(service.getKlaeffs(0, 2).klaeffs())
         .containsExactly(new KlaeffDetail("Otto", "Hallo!!!", 12));
@@ -38,7 +38,7 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Der Service kann mehrere Klaeff speichern")
   void test_2() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(444, "Otto"), "Hallo!!!");
     service.addKlaeff(mkUser(4544, "Willi"), "Selber Hallo!!!");
 
@@ -51,7 +51,7 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Die Resultate können paginiert werden")
   void test_3() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     for (int i = 0; i < 10; i++) {
       service.addKlaeff(mkUser(i, "user" + i), "stuff" + i);
     }
@@ -64,14 +64,14 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Ein negativer Offset wird abgefangen")
   void test_4() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     assertThat(service.getKlaeffs(-1, 10).klaeffs()).isEmpty();
   }
 
   @Test
   @DisplayName("Ein zu großer Start wird abgefangen")
   void test_5() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(4544, "Willi"), "Selber Hallo!!!");
     assertThat(service.getKlaeffs(8, 10).klaeffs()).containsExactly(
         new KlaeffDetail("Willi", "Selber Hallo!!!", 4544));
@@ -80,7 +80,7 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Wenn die letzte Seite weniger als max Element enthält, weden nur diese Elemente angezeigt")
   void test_6() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(4544, "Willi"), "Selber Hallo!!!");
     assertThat(service.getKlaeffs(8, 10).klaeffs()).containsExactly(
         new KlaeffDetail("Willi", "Selber Hallo!!!", 4544));
@@ -95,7 +95,7 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Kläffs werden in umgekehrter Einfügereihenfolge angezeigt")
   void test_7() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(1, "a"), "whatever");
     service.addKlaeff(mkUser(2, "b"), "whatever");
     service.addKlaeff(mkUser(3, "c"), "whatever");
@@ -108,7 +108,7 @@ class KlaeffServiceTest {
   @Test
   @DisplayName("Die User-Infos können aus dem Service abgefragt werden")
   void test_8() {
-    KlaeffService service = new KlaeffService(klaeffRepository);
+    KlaeffService service = new KlaeffService(klaeffRepository,userInfoRepository);
     service.addKlaeff(mkUser(767676, "olaf"), "something something blah blah");
     assertThat((String) service.userInfo(767676).getName()).isEqualTo("olaf");
   }
